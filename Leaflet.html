@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GIS Web Application with Leaflet</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <style>
+      /* Set the map container size */
+      #map {
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      // Initialize the map
+      var map = L.map("map").setView([-7.76591, 110.37742], 12);
+
+      // Add a tile layer (OpenStreetMap)
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      // Add a marker
+      var marker = L.marker([-7.76591, 110.37742]).addTo(map);
+      marker.bindPopup("Universitas Gadjah Mada").openPopup();
+
+      var marker = L.marker([-7.7713847, 110.3774998]).addTo(map);
+      marker.bindPopup("Universitas Negeri Yogyakarta").openPopup();
+
+      // Array Marker
+      var locations = [
+        ["LOCATION_1", -7.562471024668548, 110.85797281763786],
+        ["LOCATION_2", -4.52547184877439, 129.89180947379577],
+        ["LOCATION_3", -7.941813263913975, 112.95284046630819],
+        ["LOCATION_4", -0.6663057650035933, 127.4635596862926],
+        ["LOCATION_5", -7.557963702971119, 110.77174674221304],
+      ];
+      for (var i = 0; i < locations.length; i++) {
+        marker = new L.marker([locations[i][1], locations[i][2]])
+          .bindPopup(locations[i][0])
+          .addTo(map);
+      }
+
+      // Circle
+      var circle = L.circle([-7.76591, 110.37742], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 1500,
+      }).addTo(map);
+
+      // Function
+      var popup = L.popup();
+
+      function onMapClick(e) {
+        popup
+          .setLatLng(e.latlng)
+          .setContent("Ini koordinat " + e.latlng.toString())
+          .openOn(map);
+      }
+
+      map.on("click", onMapClick);
+    </script>
+  </body>
+</html>
